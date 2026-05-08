@@ -5,6 +5,8 @@ import jwt from "jsonwebtoken";
 // Registro
 export const register = async (req, res) => {
   try {
+    console.log("BODY REGISTER:", req.body);
+
     const { nombre, email, password, rol } = req.body;
 
     // Verificar si el usuario ya existe

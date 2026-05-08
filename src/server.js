@@ -25,6 +25,7 @@ import productoRoutes from "./routes/productoRoutes.js";
 import preguntaRoutes from "./routes/preguntaRoutes.js";
 import carritoRoutes from "./routes/carritoRoutes.js";
 import pedidoRoutes from "./routes/pedidoRoutes.js";
+import adminRoutes from "./routes/adminRoutes.js";
 
 
 app.use("/api/auth", authRoutes);
@@ -34,6 +35,8 @@ app.use("/api/productos", productoRoutes);
 app.use("/api/preguntas", preguntaRoutes);
 app.use("/api/carrito", carritoRoutes);
 app.use("/api/pedidos", pedidoRoutes);
+app.use("/api/proveedor", proveedorRoutes);
+app.use("/api/admin", adminRoutes);
 
 // Ruta base de prueba
 app.get("/", (req, res) => {
