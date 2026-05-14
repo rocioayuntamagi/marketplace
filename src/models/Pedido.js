@@ -14,7 +14,14 @@ const pedidoSchema = new mongoose.Schema({
     type: String,
     enum: ["pendiente", "confirmado", "preparando", "enviado", "entregado"],
     default: "pendiente"
-  }
+  },
+  subpedidos: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Subpedido"
+    }
+  ]
 }, { timestamps: true });
 
 export default mongoose.model("Pedido", pedidoSchema);
+

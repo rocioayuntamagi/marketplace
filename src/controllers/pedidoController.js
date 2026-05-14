@@ -12,13 +12,14 @@ export const crearPedido = async (req, res) => {
       return res.status(400).json({ msg: "El carrito está vacío" });
     }
 
-    // Calcular total
+    // Calcular total del pedido
     const total = carrito.items.reduce((acc, item) => acc + item.subtotal, 0);
 
     // Crear pedido general
     const pedido = new Pedido({
       cliente: req.user.id,
-      total
+      total,
+      subpedidos: [] // importante para relacionar
     });
 
     await pedido.save();
@@ -41,20 +42,27 @@ export const crearPedido = async (req, res) => {
       });
     }
 
-    // Crear subpedidos
+    // Crear subpedidos y asociarlos al pedido
     for (const proveedorId in itemsPorProveedor) {
-      await Subpedido.create({
+      const nuevoSubpedido = await Subpedido.create({
         pedido: pedido._id,
         proveedor: proveedorId,
         items: itemsPorProveedor[proveedorId]
       });
+
+      pedido.subpedidos.push(nuevoSubpedido._id);
     }
+
+    await pedido.save();
 
     // Vaciar carrito
     carrito.items = [];
     await carrito.save();
 
-    res.json({ msg: "Pedido creado correctamente", pedidoId: pedido._id });
+    res.json({
+      msg: "Pedido creado correctamente",
+      pedidoId: pedido._id
+    });
 
   } catch (error) {
     console.log(error);
